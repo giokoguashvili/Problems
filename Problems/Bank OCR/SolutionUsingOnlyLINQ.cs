@@ -21,13 +21,13 @@ int AsNumber(string template, string input, int width = 3, int height = 3)
                                 )
                                 .SelectMany(oneLine => Enumerable
                                                         .Range(0, (oneLine.Length / (width * height)))
-                                                        .Select(numberIndex => String
+                                                        .Select(digitIndex => String
                                                                                 .Join(
                                                                                     Environment.NewLine,
                                                                                     Enumerable
                                                                                         .Range(0, width * height)
                                                                                         .Select(i => oneLine[
-                                                                                                        numberIndex * width
+                                                                                                        digitIndex * width
                                                                                                         + i % width
                                                                                                         + (i / width) * width * (oneLine.Length / (width * height))
                                                                                                         ]
