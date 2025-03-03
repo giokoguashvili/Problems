@@ -10,7 +10,7 @@ var input = @"
 
 Console.WriteLine(Solve(template, input) == 1279); // true
 
-int Solve(string template, string input, int withSymbols = 3, int highSymbols = 3) 
+int Solve(string template, string input, int width = 3, int height = 3) 
     => new List<string>() { template, input }
             .Select(item => item
                                 .Split("\r\n", StringSplitOptions.None)
@@ -20,21 +20,21 @@ int Solve(string template, string input, int withSymbols = 3, int highSymbols = 
                                         (prev, next) => prev.Select(i => i + next)
                                 )
                                 .SelectMany(oneLine => Enumerable
-                                                        .Range(0, (oneLine.Length / (withSymbols * highSymbols)))
+                                                        .Range(0, (oneLine.Length / (width * height)))
                                                         .Select(numberIndex => String
-                                                                                    .Join(
-                                                                                        Environment.NewLine,
-                                                                                        Enumerable
-                                                                                            .Range(0, withSymbols * highSymbols)
-                                                                                            .Select(i => oneLine[
-                                                                                                            numberIndex * withSymbols
-                                                                                                            + i % withSymbols
-                                                                                                            + (i / withSymbols) * withSymbols * (oneLine.Length / (withSymbols * highSymbols))
-                                                                                                            ]
-                                                                                            )
-                                                                                            .Chunk(withSymbols)
-                                                                                            .Select(symbols => new String(symbols))
-                                                                                    )
+                                                                                .Join(
+                                                                                    Environment.NewLine,
+                                                                                    Enumerable
+                                                                                        .Range(0, width * height)
+                                                                                        .Select(i => oneLine[
+                                                                                                        numberIndex * width
+                                                                                                        + i % width
+                                                                                                        + (i / width) * width * (oneLine.Length / (width * height))
+                                                                                                        ]
+                                                                                        )
+                                                                                        .Chunk(width)
+                                                                                        .Select(symbols => new String(symbols))
+                                                                                )
                                                         )
                                 )
             )
@@ -43,7 +43,7 @@ int Solve(string template, string input, int withSymbols = 3, int highSymbols = 
             {
                 Template = g
                             .First()
-                            .Select((n, i) => new { index = i, number = n })
+                            .Select((number, index) => (number, index))
                             .ToDictionary(x => x.number),
                 Numbers = g.Last()
             })
@@ -52,6 +52,6 @@ int Solve(string template, string input, int withSymbols = 3, int highSymbols = 
                                     .Select(n => item.Template[n].index)
             )
             .Reverse()
-            .Select((n, i) => new { Index = i, Number = n })
+            .Select((number, index) => (number, index))
             .Reverse()
-            .Aggregate(0, (prev, next) => prev + (next.Number * (int)Math.Pow(10, next.Index)));
+            .Aggregate(0, (prev, next) => prev + (next.number * (int)Math.Pow(10, next.index)));
