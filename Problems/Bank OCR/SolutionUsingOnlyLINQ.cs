@@ -72,7 +72,7 @@ long AsNumber(string template, string input, int width = 3, int height = 3)
                                                         )
                                 )
             )
-            .GroupBy(g => 1)
+            .GroupBy(_ => true)
             .Select(g => new
             {
                 DigitsTemplateAsDictionary = g
