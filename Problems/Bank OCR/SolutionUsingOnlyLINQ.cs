@@ -41,17 +41,17 @@ int AsNumber(string template, string input, int width = 3, int height = 3)
             .GroupBy(g => 1)
             .Select(g => new
             {
-                Template = g
+                DigitsTemplateAsDictionary = g
                             .First()
-                            .Select((number, index) => (number, index))
-                            .ToDictionary(x => x.number),
-                Numbers = g.Last()
+                            .Select((digit, index) => (digit, index))
+                            .ToDictionary(x => x.digit),
+                Digits = g.Last()
             })
             .SelectMany(item => item
-                                    .Numbers
-                                    .Select(n => item.Template[n].index)
+                                    .Digits
+                                    .Select(digit => item.DigitsTemplateAsDictionary[digit].index)
             )
             .Reverse()
-            .Select((number, index) => (number, index))
+            .Select((digit, index) => (digit, index))
             .Reverse()
-            .Aggregate(0, (prev, next) => prev + (next.number * (int)Math.Pow(10, next.index)));
+            .Aggregate(0, (prev, next) => prev + (next.digit * (int)Math.Pow(10, next.index)));
