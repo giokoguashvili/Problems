@@ -3,14 +3,33 @@ var digitsTemplate = @"
 | |  | _| _||_||_ |_   ||_||_|
 |_|  ||_  _|  | _||_|  ||_| _|";
 
-var digits = @"
+var digits1 = @"
  _     _  _  _ 
 | |  | _|  ||_|
 |_|  ||_   | _|";
 
-Console.WriteLine(AsNumber(digitsTemplate, digits) == 1279); // true
+var digits2 = @"
+ _  _  _ 
+|_| _|| |
+|_||_ |_|";
 
-int AsNumber(string template, string input, int width = 3, int height = 3) 
+var digits3 = @"
+ _  _  _  _  _     _  _     _ 
+|_||_|  ||_ |_ |_| _| _|  || |
+ _||_|  ||_| _|  | _||_   ||_|";
+
+var digits4 = @"
+ _  _  _  _  _  _     _  _     _  _ 
+| ||_||_|  ||_ |_ |_| _| _|  || || |
+|_| _||_|  ||_| _|  | _||_   ||_||_|";
+
+Console.WriteLine(AsNumber(digitsTemplate, digitsTemplate)  == 123456789);      // true
+Console.WriteLine(AsNumber(digitsTemplate, digits1)         == 1279);           // true
+Console.WriteLine(AsNumber(digitsTemplate, digits2)         == 820);            // true
+Console.WriteLine(AsNumber(digitsTemplate, digits3)         == 9876543210);     // true
+Console.WriteLine(AsNumber(digitsTemplate, digits4)         == 98765432100);    // true
+
+long AsNumber(string template, string input, int width = 3, int height = 3) 
     => new List<string>() { template, input }
             .Select(item => item
                                 .Split("\r\n", StringSplitOptions.None)
@@ -54,4 +73,4 @@ int AsNumber(string template, string input, int width = 3, int height = 3)
             .Reverse()
             .Select((digit, index) => (digit, index))
             .Reverse()
-            .Aggregate(0, (prev, next) => prev + (next.digit * (int)Math.Pow(10, next.index)));
+            .Aggregate((long)0, (prev, next) => prev + (next.digit * (long)Math.Pow(10, next.index)));
