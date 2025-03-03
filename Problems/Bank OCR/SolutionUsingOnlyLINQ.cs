@@ -1,16 +1,16 @@
-var template = @"
+var digitsTemplate = @"
  _     _  _     _  _  _  _  _ 
 | |  | _| _||_||_ |_   ||_||_|
 |_|  ||_  _|  | _||_|  ||_| _|";
 
-var input = @"
+var digits = @"
  _     _  _  _ 
 | |  | _|  ||_|
 |_|  ||_   | _|";
 
-Console.WriteLine(Solve(template, input) == 1279); // true
+Console.WriteLine(AsNumber(digitsTemplate, digits) == 1279); // true
 
-int Solve(string template, string input, int width = 3, int height = 3) 
+int AsNumber(string template, string input, int width = 3, int height = 3) 
     => new List<string>() { template, input }
             .Select(item => item
                                 .Split("\r\n", StringSplitOptions.None)
