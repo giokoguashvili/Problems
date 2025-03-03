@@ -1,3 +1,15 @@
+var digitsTemplate2 = @"
+ _     _  _     _  _  _  _  _ 
+| |  | _| _||_||_ |_   ||_||_|
+| |  ||    |  |  || |  || |  |
+|_|  ||_  _|  | _||_|  ||_| _|";
+
+var _digits1 = @"
+ _     _  _  _ 
+| |  | _|  ||_|
+| |  ||    |  |
+|_|  ||_   | _|";
+
 var digitsTemplate = @"
  _     _  _     _  _  _  _  _ 
 | |  | _| _||_||_ |_   ||_||_|
@@ -23,6 +35,8 @@ var digits4 = @"
 | ||_||_|  ||_ |_ |_| _| _|  || || |
 |_| _||_|  ||_| _|  | _||_   ||_||_|";
 
+Console.WriteLine(AsNumber(digitsTemplate2, _digits1, 3, 4) == 1279);           // true
+
 Console.WriteLine(AsNumber(digitsTemplate, digitsTemplate)  == 123456789);      // true
 Console.WriteLine(AsNumber(digitsTemplate, digits1)         == 1279);           // true
 Console.WriteLine(AsNumber(digitsTemplate, digits2)         == 820);            // true
@@ -45,11 +59,12 @@ long AsNumber(string template, string input, int width = 3, int height = 3)
                                                                                     Environment.NewLine,
                                                                                     Enumerable
                                                                                         .Range(0, width * height)
-                                                                                        .Select(i => oneLine[
-                                                                                                        digitIndex * width
-                                                                                                        + i % width
-                                                                                                        + (i / width) * width * (oneLine.Length / (width * height))
-                                                                                                        ]
+                                                                                        .Select(i => oneLine
+                                                                                                        .ElementAt(
+                                                                                                            digitIndex * width
+                                                                                                            + i % width
+                                                                                                            + (i / width) * width * (oneLine.Length / (width * height))
+                                                                                                        )
                                                                                         )
                                                                                         .Chunk(width)
                                                                                         .Select(symbols => new String(symbols))
@@ -68,7 +83,11 @@ long AsNumber(string template, string input, int width = 3, int height = 3)
             })
             .SelectMany(item => item
                                     .Digits
-                                    .Select(digit => item.DigitsTemplateAsDictionary[digit].index)
+                                    .Select(digit => item
+                                                        .DigitsTemplateAsDictionary
+                                                        .GetValueOrDefault(digit)
+                                                        .index
+                                    )
             )
             .Reverse()
             .Select((digit, index) => (digit, index))
